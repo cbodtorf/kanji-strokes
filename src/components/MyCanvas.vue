@@ -1,7 +1,8 @@
 <template>
-  <div class="my-canvas-wrapper">
-    <canvas ref="my-canvas"></canvas>
-
+  <div>
+    <div class="my-canvas-wrapper">
+      <canvas ref="my-canvas"></canvas>
+    </div>
     <div class="c-controls">
       <button @click="erase" style="width:70;height:30;">Erase</button>
       <button @click="deleteLast" style="width:150;height:30;">Erase Last Stroke</button>
@@ -86,6 +87,10 @@ export default {
     // Set up touch events for mobile, etc
     this.touchEvents.forEach((direction) => {
       document.addEventListener(`touch${direction}`, (e) => {
+        if (e.target == canvas) {
+          e.preventDefault();
+        }
+        
         if(direction === 'start') {
           this.mousePos = this.getTouchPos(canvas, e);
           const touch = e.touches[0];
@@ -392,6 +397,24 @@ export default {
 </script>
 
 <style>
+.c-controls {
+  /* position: absolute; */
+  top: 0;
+  text-align: center;
+  width: 100%;
+  border: 2px solid;
+  background: white;
+}
+.c-controls button {
+  -webkit-appearance: none;
+  border: none;
+  border-left: 2px solid;
+  outline: none;
+  background: white;
+}
+.my-canvas-wrapper {
+  /* position: relative; */
+}
 .my-canvas-wrapper canvas {
   margin-bottom: 35px;
   touch-action: none;
