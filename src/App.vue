@@ -1,17 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h2>Kanji Strokes</h2>
+
+    <my-canvas :refPatterns="refPatterns" style="width: 100%; height: 600px;">
+    </my-canvas>
+    
+    <font size="6">
+      <div id="candidateList"> </div>
+    </font>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MyCanvas from './components/MyCanvas'
+// import refPatterns from './refPatterns'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    MyCanvas
+  },
+  computed: {
+    refPatterns () { 
+      return window.refPatterns
+    }
+  },
+
+  mounted () {
+    // eslint-disable-next-line
+    console.log('refPatterns', this.refPatterns)
   }
 }
 </script>
@@ -24,5 +41,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.c-controls {
+  display: flex;
+  justify-content: center;
 }
 </style>
