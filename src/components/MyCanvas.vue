@@ -48,6 +48,7 @@ export default {
         context: null
       },
       events: ['move', 'down', 'up', 'out', 'over'],
+      touchEvents: ['start', 'end', 'move'],
       recordedPattern: [],
       prevX: 0,
       prevY: 0,
@@ -56,6 +57,7 @@ export default {
       flagDown: false,
       flagOver: false,
       currentLine: [],
+      mousePos: { x:0, y:0 },
     }
   },
 
@@ -81,16 +83,49 @@ export default {
     this.w = canvas.width;
     this.h = canvas.height;
 
+    // Set up touch events for mobile, etc
+    this.touchEvents.forEach((direction) => {
+      document.addEventListener(`touch${direction}`, (e) => {
+        if(direction === 'start') {
+          this.mousePos = this.getTouchPos(canvas, e);
+          const touch = e.touches[0];
+          const mouseEvent = new MouseEvent("mousedown", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+          });
+          canvas.dispatchEvent(mouseEvent);
+        } else if (direction === 'end') {
+          const mouseEvent = new MouseEvent("mouseup", {});
+          canvas.dispatchEvent(mouseEvent);
+        } else if (direction === 'move') {
+          this.mousePos = this.getTouchPos(canvas, e);
+          const touch = e.touches[0];
+          const mouseEvent = new MouseEvent("mousemove", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+          });
+          canvas.dispatchEvent(mouseEvent);
+        }
+        this.findxy(`touch${direction}`, e)
+      }, false);
+    })
+
     this.events.forEach((direction) => {
       canvas.addEventListener(`mouse${direction}`, (e) => {
-        // eslint-disable-next-line
-        // console.log(`direction: ${direction}`, `event: ${e}`)
         this.findxy(direction, e)
       }, false);
     })
   },
 
   methods: {
+    getTouchPos(canvasDom, touchEvent) {
+      var rect = canvasDom.getBoundingClientRect();
+      return {
+        x: touchEvent.touches[0].clientX - rect.left,
+        y: touchEvent.touches[0].clientY - rect.top
+      };
+    },
+  
     clearRect(ctx) {
       ctx.clearRect(0, 0, this.w, this.h)
     },
@@ -357,7 +392,9 @@ export default {
 </script>
 
 <style>
-.my-canvas-wrapper {
+.my-canvas-wrapper canvas {
   margin-bottom: 35px;
+  touch-action: none;
+  border: 2px solid black;
 }
 </style>

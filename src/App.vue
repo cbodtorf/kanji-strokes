@@ -2,7 +2,7 @@
   <div id="app">
     <h2>Kanji Strokes</h2>
 
-    <my-canvas :refPatterns="refPatterns" style="width: 100%; height: 600px;">
+    <my-canvas :refPatterns="refPatterns" style="width: 100%; height: 400px;">
     </my-canvas>
     
     <font size="6">
