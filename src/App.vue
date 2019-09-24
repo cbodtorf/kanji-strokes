@@ -41,6 +41,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .c-controls {
   display: flex;

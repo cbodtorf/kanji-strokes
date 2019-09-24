@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full-wrapper">
     <div class="my-canvas-wrapper">
       <canvas ref="my-canvas"></canvas>
     </div>
@@ -431,11 +431,16 @@ export default {
   outline: none;
   background: white;
 }
-.my-canvas-wrapper {
-  /* position: relative; */
+.full-wrapper {
   -webkit-overflow-scrolling: auto;
 }
+.my-canvas-wrapper {
+  display: block;
+  width: 90%;
+  margin: 0 auto;
+}
 .my-canvas-wrapper canvas {
+  max-width: 100%;
   margin-bottom: 35px;
   touch-action: none;
   border: 2px solid black;
