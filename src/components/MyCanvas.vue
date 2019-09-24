@@ -84,13 +84,32 @@ export default {
     this.w = canvas.width;
     this.h = canvas.height;
 
+    // // Prevent scrolling when touching the canvas
+    // document.body.addEventListener("touchstart", function (e) {
+    //     if (e.target == canvas) {
+    //         e.preventDefault();
+    //     }
+    // }, { passive: false });
+    // document.body.addEventListener("touchend", function (e) {
+    //     if (e.target == canvas) {
+    //         e.preventDefault();
+    //     }
+    // }, { passive: false });
+    // document.body.addEventListener("touchmove", function (e) {
+    //     if (e.target == canvas) {
+    //         e.preventDefault();
+    //     }
+    // }, { passive: false });
+
     // Set up touch events for mobile, etc
     this.touchEvents.forEach((direction) => {
-      document.addEventListener(`touch${direction}`, (e) => {
+      document.body.addEventListener(`touch${direction}`, (e) => {
         if (e.target == canvas) {
+          // eslint-disable-next-line
+          console.log('hey target is canvas')
           e.preventDefault();
         }
-        
+
         if(direction === 'start') {
           this.mousePos = this.getTouchPos(canvas, e);
           const touch = e.touches[0];
@@ -112,7 +131,7 @@ export default {
           canvas.dispatchEvent(mouseEvent);
         }
         this.findxy(`touch${direction}`, e)
-      }, false);
+      }, { passive: false });
     })
 
     this.events.forEach((direction) => {
@@ -414,6 +433,7 @@ export default {
 }
 .my-canvas-wrapper {
   /* position: relative; */
+  -webkit-overflow-scrolling: auto;
 }
 .my-canvas-wrapper canvas {
   margin-bottom: 35px;
